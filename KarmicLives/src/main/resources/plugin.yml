@@ -1,0 +1,39 @@
+name: KarmicLives
+main: com.mitsugaru.karmiclives.KarmicLives
+version: 0.01
+author: Mitsugaru
+
+commands:
+    lives:
+        description: Root command.
+        usage: /<command>
+
+permissions:
+    KarmicLives.all:
+        description: Gives all permission nodes.
+        default: false
+        children:
+            KarmicLives.buy: true
+            KarmicLives.sell: true
+            KarmicLives.trade: true
+            KarmicLives.use: true
+            KarmicLives.free: true
+            KarmicLives.admin: true
+    KarmicLives.buy:
+        description: Allows a player to buy lives.
+        default: false
+    KarmicLives.sell:
+        description: Allows players to sell lives for money.
+        default: false
+    KarmicLives.trade:
+        description: Allows players to send lives to other players.
+        default: false
+    KarmicLives.free:
+        description: Allows players to buy lives for free.
+        default: false
+    KarmicLives.use:
+        description: Makes a player use the lives system.
+        default: false
+    KarmicLives.admin:
+        description: Administrate the plugin.
+        default: op
