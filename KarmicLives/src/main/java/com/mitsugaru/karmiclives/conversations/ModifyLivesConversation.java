@@ -51,6 +51,7 @@ public abstract class ModifyLivesConversation extends ValidatingPrompt {
       if(validAccept(in)) {
          plugin.getLivesConfig().set(name, previous + amount);
          context.getForWhom().sendRawMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.GREEN + " Success.");
+         plugin.getLivesConfig().save();
          return END_OF_CONVERSATION;
       } else if(validCancel(in)) {
          context.getForWhom().sendRawMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Transaction cancelled.");

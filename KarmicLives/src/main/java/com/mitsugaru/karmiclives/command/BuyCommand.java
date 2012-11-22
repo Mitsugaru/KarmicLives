@@ -45,7 +45,7 @@ public class BuyCommand implements ILivesCommand {
       }
       final int current = plugin.getLivesConfig().getLives(sender.getName());
       final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
-      if((current + amount) > max) {
+      if((current + amount) > max && max > 0) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
          amount = max - current;
       }

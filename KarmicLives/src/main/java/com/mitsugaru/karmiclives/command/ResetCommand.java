@@ -12,7 +12,7 @@ import org.bukkit.conversations.ConversationPrefix;
 import org.bukkit.entity.Player;
 
 import com.mitsugaru.karmiclives.KarmicLives;
-import com.mitsugaru.karmiclives.conversations.BuyConfirmConversation;
+import com.mitsugaru.karmiclives.conversations.SetConfirmConversation;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
@@ -43,7 +43,7 @@ public class ResetCommand implements ILivesCommand {
          final Map<Object, Object> map = new HashMap<Object, Object>();
          map.put("amount", amount);
          map.put("name", sender.getName());
-         Conversation conv = plugin.getFactory().withFirstPrompt(new BuyConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
+         Conversation conv = plugin.getFactory().withFirstPrompt(new SetConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
             @Override
             public String getPrefix(ConversationContext context) {
                return ChatColor.GRAY + plugin.getTag();

@@ -17,7 +17,12 @@ public class VersionCommand implements ILivesCommand {
       sender.sendMessage(ChatColor.GOLD + "By " + plugin.getDescription().getAuthors().get(0));
       sender.sendMessage(ChatColor.GRAY + "=================");
       sender.sendMessage(ChatColor.BLUE + "Cost: " + plugin.getRootConfig().getDouble(RootConfigNode.LIVES_COST));
-      sender.sendMessage(ChatColor.BLUE + "Max: " + plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM));
+      final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
+      String maxString = "" + max;
+      if(max <= 0) {
+         maxString = "Infinite";
+      }
+      sender.sendMessage(ChatColor.BLUE + "Max: " + maxString);
       return true;
    }
 

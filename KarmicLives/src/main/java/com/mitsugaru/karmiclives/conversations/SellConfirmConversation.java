@@ -43,6 +43,7 @@ public class SellConfirmConversation extends ModifyLivesConversation {
       if(validAccept(in)) {
          // Take lives
          plugin.getLivesConfig().set(name, previous - amount);
+         plugin.getLivesConfig().save();
          // take money
          plugin.getEconomy().depositPlayer(source, cost);
          context.getForWhom().sendRawMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.GREEN + " Success.");

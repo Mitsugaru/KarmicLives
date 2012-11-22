@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
-import com.mitsugaru.karmiclives.conversations.BuyConfirmConversation;
+import com.mitsugaru.karmiclives.conversations.SetConfirmConversation;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
@@ -47,7 +47,7 @@ public class SetCommand implements ILivesCommand {
          return true;
       }
       final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
-      if(amount > max) {
+      if(amount > max && max > 0) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
          amount = max;
       }
@@ -56,7 +56,7 @@ public class SetCommand implements ILivesCommand {
          final Map<Object, Object> map = new HashMap<Object, Object>();
          map.put("amount", amount);
          map.put("name", sender.getName());
-         Conversation conv = plugin.getFactory().withFirstPrompt(new BuyConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
+         Conversation conv = plugin.getFactory().withFirstPrompt(new SetConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
             @Override
             public String getPrefix(ConversationContext context) {
                return ChatColor.GRAY + plugin.getTag();
