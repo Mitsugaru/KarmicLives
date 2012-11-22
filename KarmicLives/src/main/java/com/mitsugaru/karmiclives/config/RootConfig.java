@@ -1,11 +1,14 @@
 package com.mitsugaru.karmiclives.config;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class RootConfig extends ModularConfig {
+import com.mitsugaru.karmiclives.KarmicLives;
+import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
+import com.mitsugaru.karmiclives.services.ModularConfig;
 
-   public RootConfig(JavaPlugin plugin) {
+public class RootConfig extends ModularConfig<KarmicLives> {
+
+   public RootConfig(KarmicLives plugin) {
       super(plugin);
       final ConfigurationSection config = plugin.getConfig();
       loadDefaults(config);

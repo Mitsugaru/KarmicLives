@@ -1,12 +1,15 @@
-package com.mitsugaru.karmiclives.config;
+package com.mitsugaru.karmiclives.config.nodes;
+
+import com.mitsugaru.karmiclives.config.nodes.ConfigNode.VarType;
 
 public enum RootConfigNode implements ConfigNode {
    /**
     * Lives
     */
    LIVES_MAXIMUM("lives.max", VarType.INTEGER, 0),
-   LIVES_COST("lives.cost", VarType.DOUBLE, 100),
+   LIVES_COST("lives.cost", VarType.DOUBLE, 100.0),
    LIVES_START("lives.start", VarType.INTEGER, 3),
+   LIVES_ADJUST("lives.adjust", VarType.INTEGER, 1),
    /**
     * Debug.
     */

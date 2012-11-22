@@ -8,14 +8,17 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class LivesConfig extends ModularConfig {
+import com.mitsugaru.karmiclives.KarmicLives;
+import com.mitsugaru.karmiclives.config.nodes.ConfigNode;
+import com.mitsugaru.karmiclives.services.ModularConfig;
+
+public class LivesConfig extends ModularConfig<KarmicLives> {
 
    private File file;
    private YamlConfiguration config;
 
-   public LivesConfig(JavaPlugin plugin) {
+   public LivesConfig(KarmicLives plugin) {
       super(plugin);
       file = new File(plugin.getDataFolder().getAbsolutePath() + "/lives.yml");
       config = YamlConfiguration.loadConfiguration(file);
@@ -35,13 +38,18 @@ public class LivesConfig extends ModularConfig {
    public void set(String path, Object o) {
       config.set(path, o);
    }
-   
+
    public int getLives(String name) {
       return config.getInt(name, 0);
    }
 
+   public boolean playerExists(String name) {
+      return config.contains(name);
+   }
+
    @Override
    public void reload() {
+      // Reload config from file.
       try {
          config.load(file);
       } catch(FileNotFoundException e) {
@@ -59,14 +67,17 @@ public class LivesConfig extends ModularConfig {
 
    @Override
    public void loadSettings(ConfigurationSection config) {
+      throw new UnsupportedOperationException();
    }
 
    @Override
    public void loadDefaults(ConfigurationSection config) {
+      throw new UnsupportedOperationException();
    }
 
    @Override
    public void boundsCheck() {
+      throw new UnsupportedOperationException();
    }
 
    @Override

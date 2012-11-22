@@ -18,6 +18,7 @@ public interface ILivesCommand {
     *           - Label.
     * @param args
     *           - Command arguments.
+    * @return True if valid command and executed. Else false.
     */
-   void execute(KarmicLives plugin, CommandSender sender, Command command, String label, String[] args);
+   boolean execute(KarmicLives plugin, CommandSender sender, Command command, String label, String[] args);
 }
