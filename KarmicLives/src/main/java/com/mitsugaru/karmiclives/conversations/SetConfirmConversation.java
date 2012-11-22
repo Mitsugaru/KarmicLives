@@ -15,8 +15,8 @@ public class SetConfirmConversation extends ModifyLivesConversation {
    public String getPromptText(ConversationContext context) {
       amount = (Integer) context.getSessionData("amount");
       name = (String) context.getSessionData("name");
-      return ChatColor.WHITE + " Set player " + ChatColor.GOLD + name + ChatColor.WHITE + "'s lives to "
-            + ChatColor.AQUA + amount + ChatColor.WHITE + "?";
+      return ChatColor.WHITE + " Set player " + ChatColor.GOLD + name + ChatColor.WHITE + "'s lives to " + ChatColor.AQUA + amount + ChatColor.WHITE
+            + "?";
    }
 
 }

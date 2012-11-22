@@ -65,6 +65,7 @@ public class SetCommand implements ILivesCommand {
          conv.begin();
       } else {
          plugin.getLivesConfig().set(name, amount);
+         plugin.getLivesConfig().save();
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Set " + ChatColor.GOLD + name + ChatColor.WHITE + "'s lives to "
                + ChatColor.AQUA + amount);
       }

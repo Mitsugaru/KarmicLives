@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -117,7 +118,13 @@ public abstract class CommandHandler implements CommandExecutor {
             return unknownCommand(sender, command, label, args);
          }
          // Execute command
-         return subCommand.execute(plugin, sender, command, label, shortenArgs(args));
+         boolean value = true;
+         try {
+            value = subCommand.execute(plugin, sender, command, label, shortenArgs(args));
+         } catch (ArrayIndexOutOfBoundsException e) {
+            sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Missing parameters.");
+         }
+         return value;
       }
    }
 

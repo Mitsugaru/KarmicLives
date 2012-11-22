@@ -12,7 +12,8 @@ import org.bukkit.conversations.ConversationPrefix;
 import org.bukkit.entity.Player;
 
 import com.mitsugaru.karmiclives.KarmicLives;
-import com.mitsugaru.karmiclives.conversations.SetConfirmConversation;
+import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
+import com.mitsugaru.karmiclives.conversations.ResetConfirmConversation;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
@@ -37,15 +38,13 @@ public class ResetCommand implements ILivesCommand {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Could not find player with name: " + name);
          return false;
       }
-      final int amount = 0;
+      final int amount = plugin.getRootConfig().getInt(RootConfigNode.LIVES_START);
       // confirm set lives
       if(sender instanceof Player) {
          final Map<Object, Object> map = new HashMap<Object, Object>();
          map.put("amount", amount);
          map.put("name", sender.getName());
-         // TODO have its own conversation, one that will clear the inventory
-         // for the given player as well.
-         Conversation conv = plugin.getFactory().withFirstPrompt(new SetConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
+         Conversation conv = plugin.getFactory().withFirstPrompt(new ResetConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
             @Override
             public String getPrefix(ConversationContext context) {
                return ChatColor.GRAY + plugin.getTag();
@@ -54,8 +53,11 @@ public class ResetCommand implements ILivesCommand {
          conv.begin();
       } else {
          plugin.getLivesConfig().set(name, amount);
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Set " + ChatColor.GOLD + name + ChatColor.WHITE + "'s lives to "
-               + ChatColor.AQUA + amount);
+         plugin.getInventoryConfig().clearPlayerStorage(name);
+         plugin.getLivesConfig().save();
+         plugin.getInventoryConfig().save();
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Reset lives and cleared stored inventory for " + ChatColor.GOLD
+               + name);
       }
       return true;
    }

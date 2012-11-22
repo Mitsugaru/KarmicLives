@@ -6,7 +6,6 @@ public enum PermissionNode {
    BUY("KarmicLives.buy"),
    SELL("KarmicLives.sell"),
    TRADE("KarmicLives.trade"),
-   FREE("KarmicLives.free"),
    USE("KarmicLives.use"),
    VIEW("KarmicLives.view"),
    ADMIN("KarmicLives.admin"),
