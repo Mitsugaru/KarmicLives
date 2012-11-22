@@ -9,6 +9,13 @@ public enum RootConfigNode implements ConfigNode {
    LIVES_START("lives.start", VarType.INTEGER, 3),
    LIVES_ADJUST("lives.adjust", VarType.INTEGER, 1),
    LIVES_NOTIFY("lives.notify", VarType.BOOLEAN, true),
+   LIVES_BUNDLE("lives.bundle", VarType.INTEGER, 1),
+   /**
+    * Cooldown
+    */
+   COOLDOWN_USE("cooldown.use", VarType.BOOLEAN, false),
+   COOLDOWN_TIME("cooldown.time", VarType.INTEGER, 30),
+   COOLDOWN_PERMISSION("cooldown.permission", VarType.BOOLEAN, true),
    /**
     * Debug.
     */
@@ -17,7 +24,7 @@ public enum RootConfigNode implements ConfigNode {
    /**
     * Version.
     */
-   VERSION("version", VarType.STRING, "2.0");
+   VERSION("version", VarType.STRING, "0.1");
 
    /**
     * Config path.

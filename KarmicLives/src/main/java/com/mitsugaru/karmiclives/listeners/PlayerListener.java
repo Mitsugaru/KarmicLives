@@ -13,6 +13,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
+import com.mitsugaru.karmiclives.tasks.CooldownTask;
 
 /**
  * Listener class for player events.
@@ -70,15 +71,21 @@ public class PlayerListener implements Listener {
       if(player == null) {
          return;
       }
+      if(checkCooldown(player.getName())) {
+         return;
+      }
       // Check permissions
       if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
          return;
       } else if(plugin.getRootConfig().getBoolean(RootConfigNode.LIVES_NOTIFY)) {
-         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Lives remaining: "
+         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Lives remaining: " + ChatColor.GOLD
                + plugin.getLivesConfig().getLives(player.getName()));
       }
+      // Set the cooldown
+      setCooldown(player);
       // Restore inventory if possible.
       plugin.getInventoryConfig().restorePlayerStorage(player);
+      // Clear stored inventory
       plugin.getInventoryConfig().clearPlayerStorage(player.getName());
    }
 
@@ -104,6 +111,11 @@ public class PlayerListener implements Listener {
       if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
          return;
       }
+      if(checkCooldown(player.getName())) {
+         // tell player that their cooldown is still in effect
+         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Cooldown still in effect. Inventory not saved.");
+         return;
+      }
       // Check if we should save the inventory
       if(!shouldSaveOnDeath(player)) {
          return;
@@ -126,6 +138,9 @@ public class PlayerListener implements Listener {
     * @return True if we should save the inventory. Else false.
     */
    private boolean shouldSaveOnDeath(Player player) {
+      if(plugin.hasPermissionNode(player, PermissionNode.IGNORE_DEATH)) {
+         return true;
+      }
       int lives = plugin.getLivesConfig().getLives(player.getName());
       if(lives <= 0) {
          // They have no lives, don't save inventory
@@ -144,4 +159,31 @@ public class PlayerListener implements Listener {
       }
       return true;
    }
+
+   private boolean checkCooldown(String name) {
+      if(plugin.getRootConfig().getBoolean(RootConfigNode.COOLDOWN_USE)) {
+         return plugin.getCooldowns().containsKey(name);
+      }
+      return false;
+   }
+
+   private void setCooldown(Player player) {
+      if(!plugin.getRootConfig().getBoolean(RootConfigNode.COOLDOWN_USE) || plugin.hasPermissionNode(player, PermissionNode.IGNORE_COOLDOWN)) {
+         return;
+      } else if(plugin.getRootConfig().getBoolean(RootConfigNode.COOLDOWN_PERMISSION) && !plugin.hasPermissionNode(player, PermissionNode.COOLDOWN)) {
+         return;
+      }
+      final CooldownTask task = new CooldownTask(plugin, player.getName());
+      final int time = plugin.getRootConfig().getInt(RootConfigNode.COOLDOWN_TIME);
+      final long delay = (long) time * 20;
+      int id = plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, task, delay);
+      if(id == -1) {
+         plugin.getLogger().severe("Could not schedule cooldown task for " + player.getName());
+      } else {
+         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Cooldown in effect for " + ChatColor.GOLD + time + ChatColor.WHITE
+               + " seconds.");
+         plugin.getCooldowns().put(player.getName(), id);
+      }
+   }
+
 }

@@ -12,12 +12,11 @@ import org.bukkit.conversations.ConversationPrefix;
 import org.bukkit.entity.Player;
 
 import com.mitsugaru.karmiclives.KarmicLives;
-import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
 import com.mitsugaru.karmiclives.conversations.BuyConfirmConversation;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
-public class SetCommand implements ILivesCommand {
+public class ResetCommand implements ILivesCommand {
 
    @Override
    public boolean execute(final KarmicLives plugin, CommandSender sender, Command command, String label, String[] args) {
@@ -38,19 +37,7 @@ public class SetCommand implements ILivesCommand {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Could not find player with name: " + name);
          return false;
       }
-      // Get amount to set to
-      int amount = 0;
-      try {
-         amount = Integer.parseInt(args[1]);
-      } catch(NumberFormatException e) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Invalid number: " + ChatColor.WHITE + args[0]);
-         return true;
-      }
-      final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
-      if(amount > max) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
-         amount = max;
-      }
+      final int amount = 0;
       // confirm set lives
       if(sender instanceof Player) {
          final Map<Object, Object> map = new HashMap<Object, Object>();

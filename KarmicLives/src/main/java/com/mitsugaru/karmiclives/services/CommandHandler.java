@@ -117,7 +117,7 @@ public abstract class CommandHandler implements CommandExecutor {
             return unknownCommand(sender, command, label, args);
          }
          // Execute command
-         return subCommand.execute(plugin, sender, command, label, args);
+         return subCommand.execute(plugin, sender, command, label, shortenArgs(args));
       }
    }
 

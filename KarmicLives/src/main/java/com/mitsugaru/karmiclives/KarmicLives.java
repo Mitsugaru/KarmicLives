@@ -1,8 +1,12 @@
 package com.mitsugaru.karmiclives;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +36,10 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
     */
    private InventoryConfig inventoryConfig;
    /**
+    * Conversation factory.
+    */
+   private ConversationFactory factory;
+   /**
     * Vault economy reference.
     */
    private Economy economy = null;
@@ -39,6 +47,10 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
     * Plugin tag.
     */
    private static final String TAG = "[KL]";
+   /**
+    * Concurrent hashmap with the player name and the task id.
+    */
+   private final Map<String, Integer> cooldowns = new ConcurrentHashMap<String, Integer>();
 
    @Override
    public void onDisable() {
@@ -56,6 +68,7 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
       rootConfig = new RootConfig(this);
       livesConfig = new LivesConfig(this);
       inventoryConfig = new InventoryConfig(this);
+      factory = new ConversationFactory(this);
       if(!setupEconomy()) {
          getLogger().warning("No economy found! Lives cannot be bought or sold.");
       }
@@ -82,7 +95,7 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
    public LivesConfig getLivesConfig() {
       return livesConfig;
    }
-   
+
    public InventoryConfig getInventoryConfig() {
       return inventoryConfig;
    }
@@ -94,6 +107,13 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
     */
    public Economy getEconomy() {
       return economy;
+   }
+   
+   /**
+    * Get the conversation factory.
+    */
+   public ConversationFactory getFactory() {
+      return factory;
    }
 
    /**
@@ -150,6 +170,15 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
          return null;
       }
       return name;
+   }
+
+   /**
+    * Get the cooldown tasks hash map.
+    * 
+    * @return Cooldowns.
+    */
+   public Map<String, Integer> getCooldowns() {
+      return cooldowns;
    }
 
    /**

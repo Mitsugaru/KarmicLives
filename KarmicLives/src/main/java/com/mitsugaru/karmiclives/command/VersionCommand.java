@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mitsugaru.karmiclives.KarmicLives;
+import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
 public class VersionCommand implements ILivesCommand {
@@ -15,6 +16,8 @@ public class VersionCommand implements ILivesCommand {
       sender.sendMessage(ChatColor.GOLD + "KarmicLives " + ChatColor.AQUA + "v" + plugin.getDescription().getVersion());
       sender.sendMessage(ChatColor.GOLD + "By " + plugin.getDescription().getAuthors().get(0));
       sender.sendMessage(ChatColor.GRAY + "=================");
+      sender.sendMessage(ChatColor.BLUE + "Cost: " + plugin.getRootConfig().getDouble(RootConfigNode.LIVES_COST));
+      sender.sendMessage(ChatColor.BLUE + "Max: " + plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM));
       return true;
    }
 

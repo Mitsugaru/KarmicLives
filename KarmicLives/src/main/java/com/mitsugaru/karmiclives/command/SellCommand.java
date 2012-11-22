@@ -13,11 +13,11 @@ import org.bukkit.entity.Player;
 
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
-import com.mitsugaru.karmiclives.conversations.BuyConfirmConversation;
+import com.mitsugaru.karmiclives.conversations.SellConfirmConversation;
 import com.mitsugaru.karmiclives.permissions.PermissionNode;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
-public class BuyCommand implements ILivesCommand {
+public class SellCommand implements ILivesCommand {
 
    @Override
    public boolean execute(final KarmicLives plugin, CommandSender sender, Command command, String label, String[] args) {
@@ -29,8 +29,8 @@ public class BuyCommand implements ILivesCommand {
       if(!plugin.hasPermissionNode(sender, PermissionNode.USE)) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack Permission: " + ChatColor.WHITE + PermissionNode.USE.getNode());
          return true;
-      } else if(!plugin.hasPermissionNode(sender, PermissionNode.BUY)) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack Permission: " + ChatColor.WHITE + PermissionNode.BUY.getNode());
+      } else if(!plugin.hasPermissionNode(sender, PermissionNode.SELL)) {
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack Permission: " + ChatColor.WHITE + PermissionNode.SELL.getNode());
          return true;
       }
       // determine amount to buy
@@ -44,15 +44,15 @@ public class BuyCommand implements ILivesCommand {
          }
       }
       final int current = plugin.getLivesConfig().getLives(sender.getName());
-      final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
-      if((current + amount) > max) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
-         amount = max - current;
+      // Check if player has enough lives to sell
+      if(current < amount) {
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack lives.");
+         return true;
       }
       // check if player ignores cost
       if(plugin.hasPermissionNode(sender, PermissionNode.IGNORE_COST)) {
          // skip to giving player amount
-         plugin.getLivesConfig().set(sender.getName(), current + amount);
+         plugin.getLivesConfig().set(sender.getName(), current - amount);
          return true;
       } else if(plugin.getEconomy() == null) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.DARK_RED + " Economy not found! Check your economy plugin or Vault.");
@@ -60,28 +60,21 @@ public class BuyCommand implements ILivesCommand {
       }
       // determine cost
       final double cost = plugin.getRootConfig().getDouble(RootConfigNode.LIVES_COST) * amount;
-      // check funds
-      final double result = plugin.getEconomy().getBalance(sender.getName()) - cost;
-      if(result < 0) {
-         sender.sendMessage(String.format(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack funds. " + ChatColor.AQUA + "%d" + ChatColor.RED
-               + " lives costs " + ChatColor.GOLD + "%.2f", amount, cost));
-         return true;
-      } else {
-         // confirm buy lives from player for amount
-         final Map<Object, Object> map = new HashMap<Object, Object>();
-         map.put("amount", amount);
-         map.put("current", current);
-         map.put("name", sender.getName());
-         map.put("source", sender.getName());
-         map.put("cost", cost);
-         Conversation conv = plugin.getFactory().withFirstPrompt(new BuyConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
-            @Override
-            public String getPrefix(ConversationContext context) {
-               return ChatColor.GRAY + plugin.getTag();
-            }
-         }).withInitialSessionData(map).withLocalEcho(false).buildConversation((Player) sender);
-         conv.begin();
-      }
+      // confirm sell lives
+      final Map<Object, Object> map = new HashMap<Object, Object>();
+      map.put("amount", amount);
+      map.put("current", current);
+      map.put("name", sender.getName());
+      map.put("source", sender.getName());
+      map.put("cost", cost);
+      Conversation conv = plugin.getFactory().withFirstPrompt(new SellConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
+         @Override
+         public String getPrefix(ConversationContext context) {
+            return ChatColor.GRAY + plugin.getTag();
+         }
+      }).withInitialSessionData(map).withLocalEcho(false).buildConversation((Player) sender);
+      conv.begin();
       return true;
    }
+
 }

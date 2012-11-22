@@ -13,7 +13,7 @@ public class ReloadCommand implements ILivesCommand {
    @Override
    public boolean execute(KarmicLives plugin, CommandSender sender, Command command, String label, String[] args) {
       if(!plugin.hasPermissionNode(sender, PermissionNode.ADMIN)) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack permission: " + PermissionNode.ADMIN.getNode());
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack permission: " + ChatColor.WHITE + PermissionNode.ADMIN.getNode());
          return true;
       }
       plugin.getRootConfig().reload();
