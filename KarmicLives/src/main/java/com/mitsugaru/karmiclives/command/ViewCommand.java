@@ -7,6 +7,9 @@ import org.bukkit.command.CommandSender;
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.services.ILivesCommand;
 
+/**
+ * View command executor.
+ */
 public class ViewCommand implements ILivesCommand {
 
    @Override
@@ -17,11 +20,11 @@ public class ViewCommand implements ILivesCommand {
          name = args[0];
       }
       if(!plugin.getLivesConfig().playerExists(name)) {
-         // TODO message player
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Could not find player with name: " + name);
          return false;
       }
       final int lives = plugin.getLivesConfig().getLives(name);
-      sender.sendMessage(plugin.getTag() + " " + ChatColor.AQUA + name + ChatColor.WHITE + "'s lives: " + ChatColor.GOLD + lives);
+      sender.sendMessage(ChatColor.GRAY + plugin.getTag() + " " + ChatColor.AQUA + name + ChatColor.WHITE + "'s lives: " + ChatColor.GOLD + lives);
       return true;
    }
 

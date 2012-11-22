@@ -1,90 +1,145 @@
 package com.mitsugaru.karmiclives.listeners;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.config.nodes.RootConfigNode;
+import com.mitsugaru.karmiclives.permissions.PermissionNode;
 
+/**
+ * Listener class for player events.
+ */
 public class PlayerListener implements Listener {
-
+   /**
+    * Root plugin reference.
+    */
    private KarmicLives plugin;
 
-   private final Map<String, HashMap<Integer, ItemStack>> items = new HashMap<String, HashMap<Integer, ItemStack>>();
-
-   private final Map<String, List<ItemStack>> armor = new HashMap<String, List<ItemStack>>();
-
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - Plugin reference.
+    */
    public PlayerListener(KarmicLives plugin) {
       this.plugin = plugin;
    }
 
+   /**
+    * Listens to player joins and checks to see if the player needs to have
+    * lives added.
+    * 
+    * @param event
+    */
    @EventHandler()
    public void playerJoin(final PlayerJoinEvent event) {
       final Player player = event.getPlayer();
+      if(player == null) {
+         return;
+      }
+      if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
+         return;
+      }
       if(!plugin.getLivesConfig().playerExists(player.getName())) {
-         // TODO add to player with default amount
+         // add to player with default amount
          plugin.getLivesConfig().set(player.getName(), plugin.getRootConfig().getInt(RootConfigNode.LIVES_START));
       }
    }
 
-   @EventHandler()
+   /**
+    * Listens for player respawn events.
+    * 
+    * Set to lowest to assure that the player's inventory is prepared before any
+    * other plugins interfere.
+    * 
+    * @param event
+    *           - Player respawn event.
+    */
+   @EventHandler(priority = EventPriority.LOWEST)
+   public void playerRespawn(final PlayerRespawnEvent event) {
+      // Grab player
+      final Player player = event.getPlayer();
+      if(player == null) {
+         return;
+      }
+      // Check permissions
+      if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
+         return;
+      } else if(plugin.getRootConfig().getBoolean(RootConfigNode.LIVES_NOTIFY)) {
+         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.WHITE + " Lives remaining: "
+               + plugin.getLivesConfig().getLives(player.getName()));
+      }
+      // Restore inventory if possible.
+      plugin.getInventoryConfig().restorePlayerStorage(player);
+      plugin.getInventoryConfig().clearPlayerStorage(player.getName());
+   }
+
+   /**
+    * Listens for player death events.
+    * 
+    * Using lowest to assure that if the inventory does get modified, other
+    * plugins do not interfere.
+    * 
+    * @param event
+    *           - Player Death Event
+    */
+   @EventHandler(priority = EventPriority.LOWEST)
    public void playerDeath(final PlayerDeathEvent event) {
+      plugin.getLogger().info("PlayerDeath event");
       // Grab player
       final Player player = event.getEntity();
       if(player == null) {
          return;
       }
-      // Check if we should save the inventory
-      if(!shouldSaveOnDeath(player.getName())) {
+      plugin.getLogger().info("player: " + player.getName());
+      // Check permissions
+      if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
          return;
       }
-      // Grab inventory
+      // Check if we should save the inventory
+      if(!shouldSaveOnDeath(player)) {
+         return;
+      }
+      // Save inventory
+      plugin.getInventoryConfig().savePlayerStorage(player);
+      // Clear inventory
       PlayerInventory inventory = player.getInventory();
-      // TODO move this to the inventory config.
-      ListIterator<ItemStack> iterator = inventory.iterator();
-      plugin.getLogger().info(player.getName() + " died: ");
-      while(iterator.hasNext()) {
-         int index = iterator.nextIndex();
-         ItemStack item = iterator.next();
-         if(item != null) {
-            plugin.getLogger().info(index + " - " + item.toString());
-            final Map<String, Object> seralized = item.serialize();
-         }
-      }
-      final ItemStack[] armor = inventory.getArmorContents();
-      for(ItemStack item : armor) {
-         if(item != null) {
-            plugin.getLogger().info("* " + item.toString());
-         }
-      }
+      inventory.clear();
+      player.setItemOnCursor(null);
+      event.getDrops().clear();
    }
 
-   private boolean shouldSaveOnDeath(String name) {
-      int lives = plugin.getLivesConfig().getLives(name);
+   /**
+    * Check if the player's inventory should be saved. Also decrements the
+    * player lives count.
+    * 
+    * @param name
+    *           - Player name.
+    * @return True if we should save the inventory. Else false.
+    */
+   private boolean shouldSaveOnDeath(Player player) {
+      int lives = plugin.getLivesConfig().getLives(player.getName());
       if(lives <= 0) {
          // They have no lives, don't save inventory
-         // TODO send message
+         player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " No lives available.");
          return false;
       } else {
          // Decrement lives
          lives -= plugin.getRootConfig().getInt(RootConfigNode.LIVES_ADJUST);
          if(lives < 0) {
             // Not enough lives to pay for the amount.
-            // TODO send message
+            player.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Not enough lives.");
             return false;
          }
-         plugin.getLivesConfig().set(name, lives);
+         plugin.getLivesConfig().set(player.getName(), lives);
          plugin.getLivesConfig().save();
       }
       return true;

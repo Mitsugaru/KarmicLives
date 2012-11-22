@@ -1,7 +1,5 @@
 package com.mitsugaru.karmiclives.config.nodes;
 
-import com.mitsugaru.karmiclives.config.nodes.ConfigNode.VarType;
-
 public enum RootConfigNode implements ConfigNode {
    /**
     * Lives
@@ -10,6 +8,7 @@ public enum RootConfigNode implements ConfigNode {
    LIVES_COST("lives.cost", VarType.DOUBLE, 100.0),
    LIVES_START("lives.start", VarType.INTEGER, 3),
    LIVES_ADJUST("lives.adjust", VarType.INTEGER, 1),
+   LIVES_NOTIFY("lives.notify", VarType.BOOLEAN, true),
    /**
     * Debug.
     */

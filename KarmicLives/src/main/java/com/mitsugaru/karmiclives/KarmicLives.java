@@ -55,6 +55,7 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
    public void onEnable() {
       rootConfig = new RootConfig(this);
       livesConfig = new LivesConfig(this);
+      inventoryConfig = new InventoryConfig(this);
       if(!setupEconomy()) {
          getLogger().warning("No economy found! Lives cannot be bought or sold.");
       }

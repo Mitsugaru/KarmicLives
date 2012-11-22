@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.mitsugaru.karmiclives.KarmicLives;
 import com.mitsugaru.karmiclives.command.HelpCommand;
+import com.mitsugaru.karmiclives.command.TradeCommand;
 import com.mitsugaru.karmiclives.command.VersionCommand;
 import com.mitsugaru.karmiclives.command.ViewCommand;
 import com.mitsugaru.karmiclives.services.CommandHandler;
@@ -21,6 +22,9 @@ public class Commander extends CommandHandler {
       super(plugin, "lives");
       registerCommand("help", new HelpCommand());
       registerCommand("version", new VersionCommand());
+      final TradeCommand trade = new TradeCommand();
+      registerCommand("trade", trade);
+      registerCommand("send", trade);
       registerHandler(new AdminCommander(plugin));
    }
 

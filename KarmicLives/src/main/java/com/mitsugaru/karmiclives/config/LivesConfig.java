@@ -22,6 +22,8 @@ public class LivesConfig extends ModularConfig<KarmicLives> {
       super(plugin);
       file = new File(plugin.getDataFolder().getAbsolutePath() + "/lives.yml");
       config = YamlConfiguration.loadConfiguration(file);
+      reload();
+      save();
    }
 
    @Override
