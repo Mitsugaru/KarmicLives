@@ -1,6 +1,6 @@
 name: KarmicLives
 main: com.mitsugaru.karmiclives.KarmicLives
-version: 0.2
+version: 0.02
 authors:
  - Mitsugaru
 depend: [Vault]
