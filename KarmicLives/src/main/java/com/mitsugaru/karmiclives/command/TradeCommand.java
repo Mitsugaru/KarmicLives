@@ -62,7 +62,7 @@ public class TradeCommand implements ILivesCommand {
       // Bounds check on amount of lives received
       int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
       int target = plugin.getLivesConfig().getLives(name);
-      if((target + amount) > max && max > 0) {
+      if((target + amount) > max && max > 0 && !plugin.hasPermissionNode(sender, PermissionNode.IGNORE_MAX)) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting receiving amount to lives limit.");
          amount = max - target;
       }

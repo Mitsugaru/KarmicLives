@@ -21,9 +21,7 @@ permissions:
             KarmicLives.use: true
             KarmicLives.view: true
             KarmicLives.admin: true
-            KarmicLives.ignore.cost: true
-            KarmicLives.ignore.death: true
-            KarmicLives.ignore.cooldown: true
+            KarmicLives.ignore.all: true
     KarmicLives.buy:
         description: Allows a player to buy lives.
         default: false
@@ -54,6 +52,7 @@ permissions:
             KarmicLives.ignore.cost: true
             KarmicLives.ignore.death: true
             KarmicLives.ignore.cooldown: true
+            KarmicLives.ignore.max: true
     KarmicLives.ignore.cost:
         description: Ignores the cost for buying / selling lives.
         default: false
@@ -62,4 +61,7 @@ permissions:
         default: false
     KarmicLives.ignore.cooldown: 
         description: Ignores the cooldown.
+        default: false
+    KarmicLives.ignore.max:
+        description: Ignores the max limit.
         default: false

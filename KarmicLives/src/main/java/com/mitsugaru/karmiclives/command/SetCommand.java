@@ -47,7 +47,7 @@ public class SetCommand implements ILivesCommand {
          return true;
       }
       final int max = plugin.getRootConfig().getInt(RootConfigNode.LIVES_MAXIMUM);
-      if(amount > max && max > 0) {
+      if(amount > max && max > 0 && !plugin.hasPermissionNode(sender, PermissionNode.IGNORE_MAX)) {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
          amount = max;
       }

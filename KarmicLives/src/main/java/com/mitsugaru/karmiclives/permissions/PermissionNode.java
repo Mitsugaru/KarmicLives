@@ -12,7 +12,8 @@ public enum PermissionNode {
    COOLDOWN("KarmicLives.cooldown"),
    IGNORE_COST("KarmicLives.ignore.cost"),
    IGNORE_DEATH("KarmicLives.ignore.death"),
-   IGNORE_COOLDOWN("KarmicLives.ignore.cooldown");
+   IGNORE_COOLDOWN("KarmicLives.ignore.cooldown"),
+   IGNORE_MAX("KarmicLives.ignore.max");
 
    private String node;
 
