@@ -43,6 +43,8 @@ public class ResetCommand implements ILivesCommand {
          final Map<Object, Object> map = new HashMap<Object, Object>();
          map.put("amount", amount);
          map.put("name", sender.getName());
+         // TODO have its own conversation, one that will clear the inventory
+         // for the given player as well.
          Conversation conv = plugin.getFactory().withFirstPrompt(new SetConfirmConversation(plugin)).withPrefix(new ConversationPrefix() {
             @Override
             public String getPrefix(ConversationContext context) {

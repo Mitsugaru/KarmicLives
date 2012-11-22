@@ -18,11 +18,11 @@ public abstract class ModifyLivesConversation extends ValidatingPrompt {
    /**
     * Cancel options.
     */
-   protected static final String[] cancel = { "no", "n", "end", "stop", "cancel", "false" };
+   static final String[] cancel = { "no", "n", "end", "stop", "cancel", "false" };
    /**
     * Accepting options.
     */
-   protected static final String[] approve = { "yes", "y", "accept", "confirm", "true" };
+   static final String[] approve = { "yes", "y", "accept", "confirm", "true" };
    /**
     * Amount of change.
     */
