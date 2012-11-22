@@ -46,7 +46,12 @@ public class SellCommand implements ILivesCommand {
       final int current = plugin.getLivesConfig().getLives(sender.getName());
       // Check if player has enough lives to sell
       if(current < amount) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Lack lives.");
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Lack lives. Setting to max");
+         amount = current;
+      }
+      if(amount <= 0) {
+         //No lives to sell
+         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " No lives to sell.");
          return true;
       }
       // check if player ignores cost

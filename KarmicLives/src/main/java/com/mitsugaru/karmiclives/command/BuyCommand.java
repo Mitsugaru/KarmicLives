@@ -49,7 +49,7 @@ public class BuyCommand implements ILivesCommand {
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.YELLOW + " Adjusting to max limit.");
          amount = max - current;
       }
-      if(amount == 0) {
+      if(amount <= 0) {
          //No lives to buy
          sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " No lives to buy. At max.");
          return true;
