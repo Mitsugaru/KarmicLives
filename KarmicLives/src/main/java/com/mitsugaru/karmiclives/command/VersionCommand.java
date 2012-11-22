@@ -23,6 +23,9 @@ public class VersionCommand implements ILivesCommand {
          maxString = "Infinite";
       }
       sender.sendMessage(ChatColor.BLUE + "Max: " + maxString);
+      if(plugin.getRootConfig().getBoolean(RootConfigNode.COOLDOWN_USE)) {
+         sender.sendMessage(ChatColor.BLUE + "Cooldown time: " + plugin.getRootConfig().getInt(RootConfigNode.COOLDOWN_TIME));
+      }
       return true;
    }
 
