@@ -61,6 +61,7 @@ public class KarmicLives extends JavaPlugin implements IPermissionHandler {
       livesConfig.save();
       inventoryConfig.reload();
       inventoryConfig.save();
+      //TODO persist players with cooldown
    }
 
    @Override

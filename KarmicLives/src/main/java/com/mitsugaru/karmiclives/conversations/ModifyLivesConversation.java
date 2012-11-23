@@ -18,7 +18,7 @@ public abstract class ModifyLivesConversation extends ValidatingPrompt {
    /**
     * Cancel options.
     */
-   static final String[] cancel = { "no", "n", "end", "stop", "cancel", "false" };
+   static final String[] cancel = { "no", "n", "end", "stop", "cancel", "false", "deny" };
    /**
     * Accepting options.
     */

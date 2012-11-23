@@ -24,6 +24,10 @@ public class HelpCommand implements ILivesCommand {
          sender.sendMessage(ChatColor.WHITE + "/lives " + ChatColor.GRAY + "sell " + ChatColor.ITALIC + "<amount> " + ChatColor.RESET
                + "- Sell lives");
       }
+      if(plugin.hasPermissionNode(sender, PermissionNode.TRADE)) {
+         sender.sendMessage(ChatColor.WHITE + "/lives " + ChatColor.GRAY + "trade " + ChatColor.ITALIC + "<player> <amount> " + ChatColor.RESET
+               + "- Give lives to player");
+      }
       sender.sendMessage(ChatColor.WHITE + "/lives " + ChatColor.GRAY + "version " + ChatColor.RESET + "- Check version and settings");
       return true;
    }
