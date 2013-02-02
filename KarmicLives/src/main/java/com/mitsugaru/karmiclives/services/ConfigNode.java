@@ -1,4 +1,4 @@
-package com.mitsugaru.karmiclives.config.nodes;
+package com.mitsugaru.karmiclives.services;
 
 public interface ConfigNode {
    

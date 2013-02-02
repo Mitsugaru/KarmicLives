@@ -1,5 +1,7 @@
 package com.mitsugaru.karmiclives.config.nodes;
 
+import com.mitsugaru.karmiclives.services.ConfigNode;
+
 public enum RootConfigNode implements ConfigNode {
    /**
     * Lives
@@ -24,7 +26,7 @@ public enum RootConfigNode implements ConfigNode {
    /**
     * Version.
     */
-   VERSION("version", VarType.STRING, "0.1");
+   VERSION("version", VarType.STRING, "0.02");
 
    /**
     * Config path.

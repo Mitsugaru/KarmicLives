@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.mitsugaru.karmiclives.KarmicLives;
-import com.mitsugaru.karmiclives.config.nodes.ConfigNode;
+import com.mitsugaru.karmiclives.services.ConfigNode;
 import com.mitsugaru.karmiclives.services.ModularConfig;
 
 /**

@@ -10,7 +10,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.mitsugaru.karmiclives.KarmicLives;
-import com.mitsugaru.karmiclives.config.nodes.ConfigNode;
+import com.mitsugaru.karmiclives.services.ConfigNode;
 import com.mitsugaru.karmiclives.services.ModularConfig;
 
 public class LivesConfig extends ModularConfig<KarmicLives> {

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mitsugaru.karmiclives.config.nodes.ConfigNode;
 
 /**
  * Modular configuration class that utilizes a ConfigNode enumeration as easy
