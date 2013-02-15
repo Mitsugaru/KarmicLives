@@ -100,13 +100,11 @@ public class PlayerListener implements Listener {
     */
    @EventHandler(priority = EventPriority.LOWEST)
    public void playerDeath(final PlayerDeathEvent event) {
-      plugin.getLogger().info("PlayerDeath event");
       // Grab player
       final Player player = event.getEntity();
       if(player == null) {
          return;
       }
-      plugin.getLogger().info("player: " + player.getName());
       // Check permissions
       if(!plugin.hasPermissionNode(player, PermissionNode.USE)) {
          return;
@@ -176,7 +174,7 @@ public class PlayerListener implements Listener {
       final CooldownTask task = new CooldownTask(plugin, player.getName());
       final int time = plugin.getRootConfig().getInt(RootConfigNode.COOLDOWN_TIME);
       final long delay = (long) time * 20;
-      int id = plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, task, delay);
+      int id = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, task, delay);
       if(id == -1) {
          plugin.getLogger().severe("Could not schedule cooldown task for " + player.getName());
       } else {
