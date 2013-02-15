@@ -1,6 +1,7 @@
-name: KarmicLives
-main: com.mitsugaru.karmiclives.KarmicLives
-version: 0.02
+name: ${project.artifactId}
+description: ${project.description}
+main: ${project.mainclass}
+version: ${project.version}
 authors:
  - Mitsugaru
 depend: [Vault]
