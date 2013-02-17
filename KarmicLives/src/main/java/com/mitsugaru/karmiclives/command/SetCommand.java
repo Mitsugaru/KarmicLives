@@ -33,11 +33,6 @@ public class SetCommand implements ILivesCommand {
          // Just use as is as they might be an offline player
          name = args[0];
       }
-      // check if player exists in config
-      if(!plugin.getLivesConfig().playerExists(name)) {
-         sender.sendMessage(ChatColor.GRAY + plugin.getTag() + ChatColor.RED + " Could not find player with name: " + name);
-         return false;
-      }
       // Get amount to set to
       int amount = 0;
       try {
