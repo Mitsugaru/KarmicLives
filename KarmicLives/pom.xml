@@ -3,14 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project Info. -->
     <artifactId>KarmicLives</artifactId>
-    <version>0.03</version>
+    <version>0.04-SNAPSHOT</version>
     <name>KarmicLives</name>
     <description>Lives system.</description>
     <!-- Parent -->
     <parent>
         <groupId>com.mitsugaru</groupId>
         <artifactId>ProjectKarma</artifactId>
-        <version>1.4.7</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
     <!-- Properties -->
     <properties>
